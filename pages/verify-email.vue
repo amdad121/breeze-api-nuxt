@@ -8,8 +8,12 @@ definePageMeta({
 
 const auth = useAuthStore();
 
-const status = ref(null);
-const processing = ref(false);
+if (auth.user?.email_verified_at) {
+  navigateTo('/dashboard');
+}
+
+const status = ref<string | null>(null);
+const processing = ref<boolean>(false);
 
 const handleResendEmailVerification = async () => {
   status.value = null;
@@ -17,7 +21,7 @@ const handleResendEmailVerification = async () => {
 
   const { data } = await auth.resendEmailVerification();
 
-  status.value = data.value?.status;
+  status.value = data.value?.status ?? null;
   processing.value = false;
 };
 </script>

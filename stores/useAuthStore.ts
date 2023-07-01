@@ -1,29 +1,31 @@
 import { defineStore } from 'pinia';
 
-type User = {
+interface User {
   id: number;
   name: string;
   email: string;
-};
+  email_verified_at: string;
+}
 
-type LoginCredentials = {
+interface LoginCredentials {
   email: string;
   password: string;
-};
+  remember: boolean;
+}
 
-type RegisterCredentials = {
+interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
-};
+}
 
-type ResetCredentials = {
+interface ResetCredentials {
   token: string;
   email: string;
   password: string;
   password_confirmation: string;
-};
+}
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
@@ -37,12 +39,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   const csrf = () => useApiFetch('/sanctum/csrf-cookie');
 
-  const login = async (loginCredentials: LoginCredentials) => {
+  const login = async (credentials: LoginCredentials) => {
+    console.log(user);
+
     await csrf();
+
+    await logout();
 
     const loginResponse = await useApiFetch('/login', {
       method: 'post',
-      body: loginCredentials,
+      body: credentials,
     });
 
     await fetchUser();
@@ -50,12 +56,12 @@ export const useAuthStore = defineStore('auth', () => {
     return loginResponse;
   };
 
-  const register = async (registerCredentials: RegisterCredentials) => {
+  const register = async (credentials: RegisterCredentials) => {
     await csrf();
 
     const registerResponse = await useApiFetch('/register', {
       method: 'post',
-      body: registerCredentials,
+      body: credentials,
     });
 
     await fetchUser();
@@ -66,36 +72,30 @@ export const useAuthStore = defineStore('auth', () => {
   const forgotPassword = async (email: string) => {
     await csrf();
 
-    const forgotPasswordResponse = await useApiFetch('/forgot-password', {
+    return await useApiFetch<{ status: string }>('/forgot-password', {
       method: 'post',
       body: { email },
     });
-
-    return forgotPasswordResponse;
   };
 
-  const resetPassword = async (resetCredentials: ResetCredentials) => {
+  const resetPassword = async (credentials: ResetCredentials) => {
     await csrf();
 
-    const forgotPasswordResponse = await useApiFetch('/reset-password', {
+    return await useApiFetch<{ status: string }>('/reset-password', {
       method: 'post',
-      body: resetCredentials,
+      body: credentials,
     });
-
-    return forgotPasswordResponse;
   };
 
   const resendEmailVerification = async () => {
     await csrf();
 
-    const resendEmailVerificationResponse = await useApiFetch(
+    return await useApiFetch<{ status: string }>(
       '/email/verification-notification',
       {
         method: 'post',
       }
     );
-
-    return resendEmailVerificationResponse;
   };
 
   const logout = async () => {

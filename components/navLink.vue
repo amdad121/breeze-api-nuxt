@@ -1,13 +1,8 @@
-<script setup>
-const props = defineProps({
-  to: {
-    type: String,
-    required: true,
-  },
-  active: {
-    type: Boolean,
-  },
-});
+<script lang="ts" setup>
+const props = defineProps<{
+  to: string;
+  active?: boolean;
+}>();
 
 const classes = computed(() =>
   props.active

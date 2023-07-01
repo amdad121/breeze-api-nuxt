@@ -6,30 +6,47 @@ definePageMeta({
   layout: 'guest',
 });
 
+interface Form {
+  token: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
 const route = useRoute();
 
-const form = ref({
-  token: route.params?.token,
-  email: route.query?.email,
+if (!route.query.email) {
+  navigateTo('/');
+}
+
+const form = ref<Form>({
+  token: route.params?.token as string,
+  email: route.query?.email as string,
   password: '',
   password_confirmation: '',
 });
 
-const processing = ref(false);
-const errors = ref([]);
+interface Errors {
+  email?: string;
+  password?: string;
+  password_confirmation?: string;
+}
+
+const processing = ref<boolean>(false);
+const errors = ref<Errors>({});
 
 const auth = useAuthStore();
 
 const handleResetPassword = async () => {
   processing.value = true;
-  errors.value = [];
+  errors.value = {};
 
   const { data, error } = await auth.resetPassword(form.value);
 
-  errors.value = error.value?.data?.errors;
+  errors.value = error.value?.data?.errors || {};
   processing.value = false;
 
-  if (!error.value) {
+  if (!error.value && data.value?.status) {
     navigateTo('/login?reset=' + btoa(data.value?.status));
   }
 };
@@ -54,7 +71,7 @@ const handleResetPassword = async () => {
           readonly
         />
 
-        <InputError class="mt-2" :messages="errors?.email" />
+        <InputError class="mt-2" :message="errors?.email?.[0]" />
       </div>
 
       <div class="mt-4">
@@ -69,7 +86,7 @@ const handleResetPassword = async () => {
           autocomplete="new-password"
         />
 
-        <InputError class="mt-2" :messages="errors?.password" />
+        <InputError class="mt-2" :message="errors?.password?.[0]" />
       </div>
 
       <div class="mt-4">
@@ -84,7 +101,10 @@ const handleResetPassword = async () => {
           autocomplete="new-password"
         />
 
-        <InputError class="mt-2" :messages="errors?.password_confirmation" />
+        <InputError
+          class="mt-2"
+          :message="errors?.password_confirmation?.[0]"
+        />
       </div>
 
       <div class="flex items-center justify-end mt-4">

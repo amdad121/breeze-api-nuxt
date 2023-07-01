@@ -3,7 +3,7 @@ import { useAuthStore } from '~/stores/useAuthStore';
 
 const auth = useAuthStore();
 
-const { data } = await useApiFetch('/');
+const { data } = await useApiFetch<{ Laravel: string }>('/');
 
 const laravelVersion = data?.value?.Laravel ?? '';
 </script>

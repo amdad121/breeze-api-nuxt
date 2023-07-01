@@ -6,21 +6,32 @@ definePageMeta({
   layout: 'guest',
 });
 
-const form = ref({
+interface Form {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
+const form = ref<Form>({
   email: '',
   password: '',
   remember: false,
 });
 
-const processing = ref(false);
-const errors = ref([]);
-const status = ref(null);
+interface Errors {
+  email?: string;
+  password?: string;
+}
+
+const processing = ref<boolean>(false);
+const errors = ref<Errors>({});
+const status = ref<string | null>(null);
 
 const route = useRoute();
 
 watchEffect(() => {
-  if (route.query.reset?.length > 0 && errors.value.length === 0) {
-    status.value = atob(route.query.reset);
+  if (route.query.reset && route.query.reset?.length > 0) {
+    status.value = atob(route.query?.reset as string);
   } else {
     status.value = null;
   }
@@ -30,13 +41,11 @@ const auth = useAuthStore();
 
 const handleLogin = async () => {
   processing.value = true;
-  errors.value = [];
-
-  await auth.logout();
+  errors.value = {};
 
   const { error } = await auth.login(form.value);
 
-  errors.value = error.value?.data?.errors;
+  errors.value = error.value?.data?.errors ?? {};
   processing.value = false;
 
   if (!error.value) {
@@ -72,7 +81,7 @@ const handleLogin = async () => {
           autocomplete="username"
         />
 
-        <InputError class="mt-2" :messages="errors?.email" />
+        <InputError class="mt-2" :message="errors?.email?.[0]" />
       </div>
 
       <div class="mt-4">
@@ -87,7 +96,7 @@ const handleLogin = async () => {
           autocomplete="current-password"
         />
 
-        <InputError class="mt-2" :messages="errors?.password" />
+        <InputError class="mt-2" :message="errors?.password?.[0]" />
       </div>
 
       <div class="block mt-4">

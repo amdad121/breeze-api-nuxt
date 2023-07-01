@@ -6,22 +6,26 @@ definePageMeta({
   layout: 'guest',
 });
 
-const email = ref('');
-const processing = ref(false);
-const errors = ref([]);
-const status = ref(null);
+interface Errors {
+  email?: string;
+}
+
+const email = ref<string>('');
+const processing = ref<boolean>(false);
+const errors = ref<Errors>({});
+const status = ref<string | null>(null);
 
 const auth = useAuthStore();
 
 const handleForgotPassword = async () => {
   processing.value = true;
-  errors.value = [];
+  errors.value = {};
   status.value = null;
 
   const { data, error } = await auth.forgotPassword(email.value);
 
-  errors.value = error.value?.data?.errors;
-  status.value = data.value?.status;
+  errors.value = error.value?.data?.errors || {};
+  status.value = data.value?.status ?? '';
   processing.value = false;
 };
 </script>
@@ -59,7 +63,7 @@ const handleForgotPassword = async () => {
           autocomplete="username"
         />
 
-        <InputError class="mt-2" :messages="errors?.email" />
+        <InputError class="mt-2" :message="errors?.email?.[0]" />
       </div>
 
       <div class="flex items-center justify-end mt-4">

@@ -4,10 +4,6 @@ import { useAuthStore } from '~/stores/useAuthStore';
 const route = useRoute();
 const auth = useAuthStore();
 
-if (!auth.user?.email_verified_at) {
-  navigateTo('/verify-email');
-}
-
 const handleLogout = async () => {
   await auth.logout();
 };

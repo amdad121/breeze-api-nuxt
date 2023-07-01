@@ -6,25 +6,39 @@ definePageMeta({
   layout: 'guest',
 });
 
-const form = ref({
+interface Form {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+const form = ref<Form>({
   name: '',
   email: '',
   password: '',
   password_confirmation: '',
 });
 
-const processing = ref(false);
-const errors = ref([]);
+interface Errors {
+  name?: string;
+  email?: string;
+  password?: string;
+  password_confirmation?: string;
+}
+
+const processing = ref<boolean>(false);
+const errors = ref<Errors>({});
 
 const auth = useAuthStore();
 
 const handleRegister = async () => {
   processing.value = true;
-  errors.value = [];
+  errors.value = {};
 
   const { error } = await auth.register(form.value);
 
-  errors.value = error.value?.data?.errors;
+  errors.value = error.value?.data?.errors ?? {};
   processing.value = false;
 
   if (!error.value) {
@@ -53,7 +67,7 @@ const handleRegister = async () => {
           autocomplete="name"
         />
 
-        <InputError class="mt-2" :messages="errors?.name" />
+        <InputError class="mt-2" :message="errors?.name?.[0]" />
       </div>
 
       <div class="mt-4">
@@ -68,7 +82,7 @@ const handleRegister = async () => {
           autocomplete="username"
         />
 
-        <InputError class="mt-2" :messages="errors?.email" />
+        <InputError class="mt-2" :message="errors?.email?.[0]" />
       </div>
 
       <div class="mt-4">
@@ -83,7 +97,7 @@ const handleRegister = async () => {
           autocomplete="new-password"
         />
 
-        <InputError class="mt-2" :messages="errors?.password" />
+        <InputError class="mt-2" :message="errors?.password?.[0]" />
       </div>
 
       <div class="mt-4">
@@ -98,7 +112,10 @@ const handleRegister = async () => {
           autocomplete="new-password"
         />
 
-        <InputError class="mt-2" :message="errors?.password_confirmation" />
+        <InputError
+          class="mt-2"
+          :message="errors?.password_confirmation?.[0]"
+        />
       </div>
 
       <div class="flex items-center justify-end mt-4">

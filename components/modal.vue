@@ -1,18 +1,16 @@
-<script setup>
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false,
-  },
-  maxWidth: {
-    type: String,
-    default: '2xl',
-  },
-  closeable: {
-    type: Boolean,
-    default: true,
-  },
-});
+<script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    show?: boolean;
+    maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    closeable?: boolean;
+  }>(),
+  {
+    show: false,
+    maxWidth: '2xl',
+    closeable: true,
+  }
+);
 
 const emit = defineEmits(['close']);
 
@@ -22,7 +20,7 @@ watch(
     if (props.show) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = null;
+      document.body.style.overflow = 'visible';
     }
   }
 );
@@ -33,7 +31,7 @@ const close = () => {
   }
 };
 
-const closeOnEscape = (e) => {
+const closeOnEscape = (e: KeyboardEvent) => {
   if (e.key === 'Escape' && props.show) {
     close();
   }
@@ -43,7 +41,7 @@ onMounted(() => document.addEventListener('keydown', closeOnEscape));
 
 onUnmounted(() => {
   document.removeEventListener('keydown', closeOnEscape);
-  document.body.style.overflow = null;
+  document.body.style.overflow = 'visible';
 });
 
 const maxWidthClass = computed(() => {
