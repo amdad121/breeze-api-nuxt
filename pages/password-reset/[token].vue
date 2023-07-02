@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/useAuthStore';
-
 definePageMeta({
   middleware: ['guest'],
   layout: 'guest',
@@ -35,13 +33,13 @@ interface Errors {
 const processing = ref<boolean>(false);
 const errors = ref<Errors>({});
 
-const auth = useAuthStore();
+const { resetPassword } = useAuthStore();
 
 const handleResetPassword = async () => {
   processing.value = true;
   errors.value = {};
 
-  const { data, error } = await auth.resetPassword(form.value);
+  const { data, error } = await resetPassword(form.value);
 
   errors.value = error.value?.data?.errors || {};
   processing.value = false;
@@ -58,7 +56,7 @@ const handleResetPassword = async () => {
       <title>Reset Password</title>
     </Head>
 
-    <form @submit.prevent="handleResetPassword">
+    <form @submit.prevent="handleResetPassword()">
       <div>
         <InputLabel for="email" value="Email" />
 

@@ -1,12 +1,6 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/useAuthStore';
-
 const route = useRoute();
-const auth = useAuthStore();
-
-const handleLogout = async () => {
-  await auth.logout();
-};
+const { user, logout } = useAuthStore();
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -48,7 +42,7 @@ const showingNavigationDropdown = ref(false);
                         type="button"
                         class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                       >
-                        {{ auth?.user?.name }}
+                        {{ user?.name }}
 
                         <svg
                           class="ml-2 -mr-0.5 h-4 w-4"
@@ -67,9 +61,7 @@ const showingNavigationDropdown = ref(false);
                   </template>
 
                   <template #content>
-                    <DropdownButton @click="handleLogout">
-                      Log Out
-                    </DropdownButton>
+                    <DropdownButton @click="logout()"> Log Out </DropdownButton>
                   </template>
                 </Dropdown>
               </div>
@@ -136,15 +128,15 @@ const showingNavigationDropdown = ref(false);
               <div
                 class="font-medium text-base text-gray-800 dark:text-gray-200"
               >
-                {{ auth?.user?.name }}
+                {{ user?.name }}
               </div>
               <div class="font-medium text-sm text-gray-500">
-                {{ auth?.user?.email }}
+                {{ user?.email }}
               </div>
             </div>
 
             <div class="mt-3 space-y-1">
-              <ResponsiveNavButton @click="handleLogout">
+              <ResponsiveNavButton @click="logout()">
                 Log Out
               </ResponsiveNavButton>
             </div>

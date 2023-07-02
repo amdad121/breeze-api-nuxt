@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/useAuthStore';
-
 definePageMeta({
   middleware: ['guest'],
   layout: 'guest',
@@ -37,13 +35,13 @@ watchEffect(() => {
   }
 });
 
-const auth = useAuthStore();
+const { login } = useAuthStore();
 
 const handleLogin = async () => {
   processing.value = true;
   errors.value = {};
 
-  const { error } = await auth.login(form.value);
+  const { error } = await login(form.value);
 
   errors.value = error.value?.data?.errors ?? {};
   processing.value = false;
@@ -67,7 +65,7 @@ const handleLogin = async () => {
       {{ status }}
     </div>
 
-    <form @submit.prevent="handleLogin">
+    <form @submit.prevent="handleLogin()">
       <div>
         <InputLabel for="email" value="Email" />
 

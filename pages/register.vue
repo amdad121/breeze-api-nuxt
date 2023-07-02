@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/useAuthStore';
-
 definePageMeta({
   middleware: ['guest'],
   layout: 'guest',
@@ -30,13 +28,13 @@ interface Errors {
 const processing = ref<boolean>(false);
 const errors = ref<Errors>({});
 
-const auth = useAuthStore();
+const { register } = useAuthStore();
 
 const handleRegister = async () => {
   processing.value = true;
   errors.value = {};
 
-  const { error } = await auth.register(form.value);
+  const { error } = await register(form.value);
 
   errors.value = error.value?.data?.errors ?? {};
   processing.value = false;
@@ -53,7 +51,7 @@ const handleRegister = async () => {
       <title>Register</title>
     </Head>
 
-    <form @submit.prevent="handleRegister">
+    <form @submit.prevent="handleRegister()">
       <div>
         <InputLabel for="name" value="Name" />
 

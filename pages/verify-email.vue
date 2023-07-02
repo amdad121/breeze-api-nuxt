@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/useAuthStore';
-
 definePageMeta({
   middleware: ['auth'],
   layout: 'guest',
 });
 
-const auth = useAuthStore();
+const { user, resendEmailVerification, logout } = useAuthStore();
 
-if (auth.user?.email_verified_at) {
+if (user?.email_verified_at) {
   navigateTo('/dashboard');
 }
 
@@ -19,7 +17,7 @@ const handleResendEmailVerification = async () => {
   status.value = null;
   processing.value = true;
 
-  const { data } = await auth.resendEmailVerification();
+  const { data } = await resendEmailVerification();
 
   status.value = data.value?.status ?? null;
   processing.value = false;
@@ -46,7 +44,7 @@ const handleResendEmailVerification = async () => {
       during registration.
     </div>
 
-    <form @submit.prevent="handleResendEmailVerification">
+    <form @submit.prevent="handleResendEmailVerification()">
       <div class="mt-4 flex items-center justify-between">
         <PrimaryButton
           :class="{ 'opacity-25': processing }"
@@ -56,7 +54,7 @@ const handleResendEmailVerification = async () => {
         </PrimaryButton>
 
         <button
-          @click="auth.logout()"
+          @click="logout()"
           class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
         >
           Log Out

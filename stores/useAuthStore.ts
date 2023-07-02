@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia';
-
 interface User {
   id: number;
   name: string;
@@ -40,8 +38,6 @@ export const useAuthStore = defineStore('auth', () => {
   const csrf = () => useApiFetch('/sanctum/csrf-cookie');
 
   const login = async (credentials: LoginCredentials) => {
-    console.log(user);
-
     await csrf();
 
     await logout();

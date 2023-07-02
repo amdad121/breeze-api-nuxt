@@ -1,63 +1,88 @@
-# Nuxt 3 Minimal Starter
+# Laravel Breeze - Nuxt Edition 🏝️
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Introduction
 
-## Setup
+This repository is an implementation of the [Laravel Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Nuxt](https://nuxt.com). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Nuxt frontend with a powerful Laravel backend.
 
-Make sure to install the dependencies:
+## Official Documentation
+
+### Installation
+
+First, create a Nuxt compatible Laravel backend by installing Laravel Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
 
 ```bash
-# npm
-npm install
+# Create the Laravel application...
+laravel new nuxt-backend
 
-# pnpm
-pnpm install
+cd nuxt-backend
 
-# yarn
-yarn install
+# Install Breeze and dependencies...
+composer require laravel/breeze --dev
+
+php artisan breeze:install api
+
+# Run database migrations...
+php artisan migrate
 ```
 
-## Development Server
+Next, ensure that your application's `APP_URL` and `FRONTEND_URL` environment variables are set to `http://localhost:8000` and `http://localhost:3000`, respectively.
 
-Start the development server on `http://localhost:3000`:
+After defining the appropriate environment variables, you may serve the Laravel application using the `serve` Artisan command:
 
 ```bash
-# npm
+# Serve the application...
+php artisan serve
+```
+
+Next, clone this repository and install its dependencies with `yarn install` or `npm install`. Then, copy the `.env.example` file to `.env` and supply the URL of your backend:
+
+```
+NUXT_PUBLIC_BACKEND_URL=http://localhost:8000
+```
+
+Finally, run the application via `npm run dev`. The application will be available at `http://localhost:3000`:
+
+```
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
 ```
 
-## Production
+> Note: Currently, we recommend using `localhost` during local development of your backend and frontend to avoid CORS "Same-Origin" issues.
 
-Build the application for production:
+### Authentication Middleware
 
-```bash
-# npm
-npm run build
+This Nuxt application contains a custom `auth` middleware, designed to abstract all authentication logic away from your pages. In addition, the middleware can be used to access the currently authenticated user:
 
-# pnpm
-pnpm run build
+```js
+// ExamplePage.vue
+<script lang="ts" setup>
+definePageMeta({
+  middleware: ['auth'],
+});
 
-# yarn
-yarn build
+const { logout } = useAuthStore();
+</script>
+
+<template>
+  <div>
+    <p>{{ user?.name }}</p>
+
+    <button @click="logout()">Sign out</button>
+  </div>
+</template>
+
+<style scoped></style>
 ```
 
-Locally preview production build:
+> Note: You will need to use [optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) (`user?.name` instead of `user.name`) when accessing properties on the user object to account for Nuxt's initial server-side render.
 
-```bash
-# npm
-npm run preview
+## Contributing
 
-# pnpm
-pnpm run preview
+Thank you for considering contributing to Breeze Nuxt! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-# yarn
-yarn preview
-```
+## Code of Conduct
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## License
+
+Laravel Breeze Nuxt is open-sourced software licensed under the [MIT license](LICENSE.md).

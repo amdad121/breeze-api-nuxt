@@ -1,9 +1,7 @@
-import { useAuthStore } from '~/stores/useAuthStore';
-
 export default defineNuxtRouteMiddleware((to, from) => {
-  const auth = useAuthStore();
+  const { user } = useAuthStore();
 
-  if (!auth.user?.email_verified_at) {
+  if (!user?.email_verified_at) {
     return navigateTo('/verify-email');
   }
 });
