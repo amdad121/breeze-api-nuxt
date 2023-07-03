@@ -105,12 +105,12 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     isLoggedIn,
+    fetchUser,
     login,
     register,
-    fetchUser,
-    logout,
     forgotPassword,
     resetPassword,
     resendEmailVerification,
+    logout,
   };
 });
