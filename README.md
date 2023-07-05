@@ -81,4 +81,4 @@ Contribution is open. Create Pull-request and I'll add it to the project if it's
 
 ## License
 
-Laravel API Breeze Nuxt 3 is open-sourced software licensed under the [MIT license](LICENSE.md).
+Laravel API Breeze Nuxt 3 is open-sourced software licensed under the [MIT license](LICENSE).
