@@ -1,14 +1,14 @@
-# Laravel Breeze - Nuxt Edition 🏝️
+# Laravel API Breeze - Nuxt 3 Edition 🏝️
 
 ## Introduction
 
-This repository is an implementation of the [Laravel Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Nuxt](https://nuxt.com). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Nuxt frontend with a powerful Laravel backend.
+This repository is an implementation of the [Laravel API Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Nuxt](https://nuxt.com). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Nuxt frontend with a powerful Laravel backend.
 
 ## Official Documentation
 
 ### Installation
 
-First, create a Nuxt compatible Laravel backend by installing Laravel Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
+First, create a Nuxt compatible Laravel backend by installing Laravel API Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
 
 ```bash
 # Create the Laravel application...
@@ -77,12 +77,8 @@ const { logout } = useAuthStore();
 
 ## Contributing
 
-Thank you for considering contributing to Breeze Nuxt! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Contribution is open. Create Pull-request and I'll add it to the project if it's good enough.
 
 ## License
 
-Laravel Breeze Nuxt is open-sourced software licensed under the [MIT license](LICENSE.md).
+Laravel API Breeze Nuxt 3 is open-sourced software licensed under the [MIT license](LICENSE.md).
