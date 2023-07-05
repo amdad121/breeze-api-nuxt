@@ -2,13 +2,13 @@
 definePageMeta({
   middleware: ['guest'],
   layout: 'guest',
-});
+})
 
 interface Form {
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
+  name: string
+  email: string
+  password: string
+  password_confirmation: string
 }
 
 const form = ref<Form>({
@@ -16,33 +16,33 @@ const form = ref<Form>({
   email: '',
   password: '',
   password_confirmation: '',
-});
+})
 
 interface Errors {
-  name?: string;
-  email?: string;
-  password?: string;
-  password_confirmation?: string;
+  name?: string
+  email?: string
+  password?: string
+  password_confirmation?: string
 }
 
-const processing = ref<boolean>(false);
-const errors = ref<Errors>({});
+const processing = ref<boolean>(false)
+const errors = ref<Errors>({})
 
-const { register } = useAuthStore();
+const { register } = useAuthStore()
 
 const handleRegister = async () => {
-  processing.value = true;
-  errors.value = {};
+  processing.value = true
+  errors.value = {}
 
-  const { error } = await register(form.value);
+  const { error } = await register(form.value)
 
-  errors.value = error.value?.data?.errors ?? {};
-  processing.value = false;
+  errors.value = error.value?.data?.errors ?? {}
+  processing.value = false
 
   if (!error.value) {
-    navigateTo('/dashboard');
+    navigateTo('/dashboard')
   }
-};
+}
 </script>
 
 <template>
@@ -110,10 +110,7 @@ const handleRegister = async () => {
           autocomplete="new-password"
         />
 
-        <InputError
-          class="mt-2"
-          :message="errors?.password_confirmation?.[0]"
-        />
+        <InputError class="mt-2" :message="errors?.password_confirmation?.[0]" />
       </div>
 
       <div class="flex items-center justify-end mt-4">
@@ -124,11 +121,7 @@ const handleRegister = async () => {
           Already registered?
         </NuxtLink>
 
-        <PrimaryButton
-          class="ml-4"
-          :class="{ 'opacity-25': processing }"
-          :disabled="processing"
-        >
+        <PrimaryButton class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
           Register
         </PrimaryButton>
       </div>

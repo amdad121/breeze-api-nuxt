@@ -2,19 +2,19 @@
 definePageMeta({
   middleware: ['guest'],
   layout: 'guest',
-});
+})
 
 interface Form {
-  token: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
+  token: string
+  email: string
+  password: string
+  password_confirmation: string
 }
 
-const route = useRoute();
+const route = useRoute()
 
 if (!route.query.email) {
-  navigateTo('/');
+  navigateTo('/')
 }
 
 const form = ref<Form>({
@@ -22,32 +22,32 @@ const form = ref<Form>({
   email: route.query?.email as string,
   password: '',
   password_confirmation: '',
-});
+})
 
 interface Errors {
-  email?: string;
-  password?: string;
-  password_confirmation?: string;
+  email?: string
+  password?: string
+  password_confirmation?: string
 }
 
-const processing = ref<boolean>(false);
-const errors = ref<Errors>({});
+const processing = ref<boolean>(false)
+const errors = ref<Errors>({})
 
-const { resetPassword } = useAuthStore();
+const { resetPassword } = useAuthStore()
 
 const handleResetPassword = async () => {
-  processing.value = true;
-  errors.value = {};
+  processing.value = true
+  errors.value = {}
 
-  const { data, error } = await resetPassword(form.value);
+  const { data, error } = await resetPassword(form.value)
 
-  errors.value = error.value?.data?.errors || {};
-  processing.value = false;
+  errors.value = error.value?.data?.errors || {}
+  processing.value = false
 
   if (!error.value && data.value?.status) {
-    navigateTo('/login?reset=' + btoa(data.value?.status));
+    navigateTo('/login?reset=' + btoa(data.value?.status))
   }
-};
+}
 </script>
 
 <template>
@@ -99,17 +99,11 @@ const handleResetPassword = async () => {
           autocomplete="new-password"
         />
 
-        <InputError
-          class="mt-2"
-          :message="errors?.password_confirmation?.[0]"
-        />
+        <InputError class="mt-2" :message="errors?.password_confirmation?.[0]" />
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <PrimaryButton
-          :class="{ 'opacity-25': processing }"
-          :disabled="processing"
-        >
+        <PrimaryButton :class="{ 'opacity-25': processing }" :disabled="processing">
           Reset Password
         </PrimaryButton>
       </div>

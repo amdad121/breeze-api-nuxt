@@ -1,43 +1,43 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
-    align?: 'left' | 'right';
-    width?: '48';
-    contentClasses?: string;
+    align?: 'left' | 'right'
+    width?: '48'
+    contentClasses?: string
   }>(),
   {
     align: 'right',
     width: '48',
     contentClasses: 'py-1 bg-white dark:bg-gray-700',
-  }
-);
+  },
+)
 
 const closeOnEscape = (e: KeyboardEvent) => {
   if (open.value && e.key === 'Escape') {
-    open.value = false;
+    open.value = false
   }
-};
+}
 
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
+onMounted(() => document.addEventListener('keydown', closeOnEscape))
+onUnmounted(() => document.removeEventListener('keydown', closeOnEscape))
 
 const widthClass = computed(() => {
   return {
     48: 'w-48',
-  }[props.width.toString()];
-});
+  }[props.width.toString()]
+})
 
 const alignmentClasses = computed(() => {
   if (props.align === 'left') {
-    return 'origin-top-left left-0';
+    return 'origin-top-left left-0'
   } else if (props.align === 'right') {
-    return 'origin-top-right right-0';
+    return 'origin-top-right right-0'
   } else {
-    return 'origin-top';
+    return 'origin-top'
   }
-});
+})
 
-const open = ref(false);
+const open = ref(false)
 </script>
 
 <template>
@@ -64,10 +64,7 @@ const open = ref(false);
         style="display: none"
         @click="open = false"
       >
-        <div
-          class="rounded-md ring-1 ring-black ring-opacity-5"
-          :class="contentClasses"
-        >
+        <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
           <slot name="content" />
         </div>
       </div>

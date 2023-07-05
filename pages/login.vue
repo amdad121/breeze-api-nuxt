@@ -2,54 +2,54 @@
 definePageMeta({
   middleware: ['guest'],
   layout: 'guest',
-});
+})
 
 interface Form {
-  email: string;
-  password: string;
-  remember: boolean;
+  email: string
+  password: string
+  remember: boolean
 }
 
 const form = ref<Form>({
   email: '',
   password: '',
   remember: false,
-});
+})
 
 interface Errors {
-  email?: string;
-  password?: string;
+  email?: string
+  password?: string
 }
 
-const processing = ref<boolean>(false);
-const errors = ref<Errors>({});
-const status = ref<string | null>(null);
+const processing = ref<boolean>(false)
+const errors = ref<Errors>({})
+const status = ref<string | null>(null)
 
-const route = useRoute();
+const route = useRoute()
 
 watchEffect(() => {
   if (route.query.reset && route.query.reset?.length > 0) {
-    status.value = atob(route.query?.reset as string);
+    status.value = atob(route.query?.reset as string)
   } else {
-    status.value = null;
+    status.value = null
   }
-});
+})
 
-const { login } = useAuthStore();
+const { login } = useAuthStore()
 
 const handleLogin = async () => {
-  processing.value = true;
-  errors.value = {};
+  processing.value = true
+  errors.value = {}
 
-  const { error } = await login(form.value);
+  const { error } = await login(form.value)
 
-  errors.value = error.value?.data?.errors ?? {};
-  processing.value = false;
+  errors.value = error.value?.data?.errors ?? {}
+  processing.value = false
 
   if (!error.value) {
-    navigateTo('/dashboard');
+    navigateTo('/dashboard')
   }
-};
+}
 </script>
 
 <template>
@@ -100,9 +100,7 @@ const handleLogin = async () => {
       <div class="block mt-4">
         <label class="flex items-center">
           <Checkbox name="remember" v-model:checked="form.remember" />
-          <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"
-            >Remember me</span
-          >
+          <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
         </label>
       </div>
 
@@ -114,11 +112,7 @@ const handleLogin = async () => {
           Forgot your password?
         </NuxtLink>
 
-        <PrimaryButton
-          class="ml-4"
-          :class="{ 'opacity-25': processing }"
-          :disabled="processing"
-        >
+        <PrimaryButton class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
           Log in
         </PrimaryButton>
       </div>

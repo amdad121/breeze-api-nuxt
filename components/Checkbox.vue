@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-const emit = defineEmits(['update:checked']);
+const emit = defineEmits(['update:checked'])
 
 const props = defineProps<{
-  checked: boolean;
-  value?: any;
-}>();
+  checked: boolean
+  value?: any
+}>()
 
 const proxyChecked = computed({
   get() {
-    return props.checked;
+    return props.checked
   },
 
   set(val) {
-    emit('update:checked', val);
+    emit('update:checked', val)
   },
-});
+})
 </script>
 
 <template>
