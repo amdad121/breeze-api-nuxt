@@ -59,7 +59,7 @@ definePageMeta({
   middleware: ['auth'],
 });
 
-const { logout } = useAuthStore();
+const { user, logout } = useAuthStore();
 </script>
 
 <template>
