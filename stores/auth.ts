@@ -40,8 +40,6 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async (credentials: LoginCredentials) => {
     await csrf()
 
-    await logout()
-
     const loginResponse = await useApiFetch('/login', {
       method: 'post',
       body: credentials,
@@ -96,7 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     user.value = null
 
-    navigateTo('/login')
+    return navigateTo('/login')
   }
 
   return {

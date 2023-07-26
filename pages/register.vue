@@ -40,7 +40,7 @@ const handleRegister = async () => {
   processing.value = false
 
   if (!error.value) {
-    navigateTo('/dashboard')
+    return navigateTo('/dashboard')
   }
 }
 </script>

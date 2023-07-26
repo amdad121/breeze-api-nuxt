@@ -35,11 +35,15 @@ watchEffect(() => {
   }
 })
 
-const { login } = useAuthStore()
+const { login, isLoggedIn } = useAuthStore()
 
 const handleLogin = async () => {
   processing.value = true
   errors.value = {}
+
+  if (isLoggedIn) {
+    return navigateTo('/dashboard')
+  }
 
   const { error } = await login(form.value)
 
@@ -47,7 +51,7 @@ const handleLogin = async () => {
   processing.value = false
 
   if (!error.value) {
-    navigateTo('/dashboard')
+    return navigateTo('/dashboard')
   }
 }
 </script>

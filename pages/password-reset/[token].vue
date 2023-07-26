@@ -45,7 +45,7 @@ const handleResetPassword = async () => {
   processing.value = false
 
   if (!error.value && data.value?.status) {
-    navigateTo('/login?reset=' + btoa(data.value?.status))
+    return navigateTo('/login?reset=' + btoa(data.value?.status))
   }
 }
 </script>

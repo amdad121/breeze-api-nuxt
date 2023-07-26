@@ -1,7 +1,13 @@
 import { UseFetchOptions } from 'nuxt/app'
 
 export const useApiFetch = <T>(path: string, options: UseFetchOptions<T> = {}) => {
-  let headers: any = {}
+  const request = useRequestURL()
+
+  let headers: any = {
+    accept: 'application/json',
+    'Content-Type': 'application/json',
+    referer: request.origin,
+  }
 
   const config = useRuntimeConfig()
 
@@ -14,7 +20,7 @@ export const useApiFetch = <T>(path: string, options: UseFetchOptions<T> = {}) =
   if (process.server) {
     headers = {
       ...headers,
-      ...useRequestHeaders(['referer', 'cookie']),
+      ...useRequestHeaders(['cookie']),
     }
   }
 
